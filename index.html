@@ -4,99 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Japanese Kana Master</title>
-    <!-- Klee One Font for Textbook Handwritten Style -->
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Thanh điều hướng chính -->
     <header>
-        <nav class="tab-bar">
-            <button class="tab-btn active" data-target="practice">🎯 Luyện Tập</button>
-            <button class="tab-btn" data-target="writing">✍️ Luyện Viết</button>
-            <button class="tab-btn" data-target="history">📅 Lịch Sử</button>
-            <button class="tab-btn" data-target="stats">📊 Thống Kê</button>
+        <nav class="main-tabs">
+            <button class="main-tab-btn active" data-target="practice">🎯 Luyện Tập</button>
+            <button class="main-tab-btn" data-target="writing">✍️ Luyện Viết</button>
+            <button class="main-tab-btn" data-target="history">📅 Lịch Sử</button>
+            <button class="main-tab-btn" data-target="stats">📊 Thống Kê</button>
         </nav>
     </header>
 
-    <main>
-        <!-- TAB 1: PRACTICE -->
-        <section id="practice" class="tab-content active">
-            <div class="settings-panel">
-                <h3>Chọn bộ chữ:</h3>
-                <div class="checkbox-group" id="pool-selection">
-                    <!-- Checkboxes injected via JS -->
-                </div>
+    <main class="app-container">
+        
+        <!-- SIDEBAR DÙNG CHUNG CHO CẢ LUYỆN TẬP VÀ LUYỆN VIẾT -->
+        <aside class="sidebar card" id="main-sidebar">
+            <div class="mini-tabs">
+                <button class="mini-tab-btn active" data-script="Hiragana">Hiragana</button>
+                <button class="mini-tab-btn" data-script="Katakana">Katakana</button>
+            </div>
+            <div class="sidebar-actions">
+                <button id="btn-select-all" class="action-btn outline small">Chọn hết</button>
+                <button id="btn-deselect-all" class="action-btn outline small">Bỏ chọn</button>
             </div>
             
-            <div class="card practice-area">
-                <div id="script-badge" class="badge"></div>
-                <div id="kana-display">-</div>
-                <div id="feedback" class="feedback">Vui lòng chọn ít nhất 1 nhóm!</div>
-                
-                <input type="text" id="kana-input" placeholder="Gõ Romaji hoặc Kana" autocomplete="off" autocorrect="off" autocapitalize="none">
-                
-                <div class="stats-bar">
-                    <span id="combo-display">Combo: 0</span>
-                    <span id="score-display">✅ 0 | ❌ 0</span>
+            <div class="checkbox-scroll-area">
+                <!-- Được tạo bằng JS: Cột 1 (Cơ bản + Đục), Cột 2 (Âm ghép) -->
+                <div class="checkbox-grid" id="checkbox-container">
+                    <div id="col-left" class="checkbox-col"></div>
+                    <div id="col-right" class="checkbox-col"></div>
                 </div>
             </div>
-        </section>
+        </aside>
 
-        <!-- TAB 2: WRITING PRACTICE -->
-        <section id="writing" class="tab-content">
-            <div class="card writing-area">
-                <div class="writing-header">
-                    <h3>Romaji: <span id="write-romaji-target">--</span></h3>
-                    <button id="btn-pronounce" class="action-btn">🔊 Đọc âm</button>
+        <!-- KHU VỰC NỘI DUNG CHÍNH (Thay đổi theo tab) -->
+        <div class="content-area">
+            
+            <!-- TAB 1: LUYỆN TẬP PHẢN XẠ -->
+            <section id="practice" class="tab-content active">
+                <div class="play-area card">
+                    <div id="script-badge" class="badge"></div>
+                    <div id="kana-display">-</div>
+                    <div id="feedback" class="feedback">Vui lòng chọn bài!</div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="kana-input" placeholder="Gõ Romaji hoặc Kana" autocomplete="off" autocorrect="off" autocapitalize="none">
+                    </div>
+                    <div class="hint">Ấn Enter hoặc gõ đúng tự chuyển câu</div>
+                    
+                    <div class="stats-divider"></div>
+                    
+                    <div id="combo-display" class="combo-text">Combo: 0</div>
+                    <div id="score-display" class="score-text">✅ Đúng: 0 &nbsp;|&nbsp; ❌ Sai: 0</div>
+                    <div id="time-display" class="time-text">⏱ Nhanh nhất: -- | Chậm nhất: -- | TB: --</div>
                 </div>
-                
-                <div class="canvas-container">
-                    <canvas id="drawing-pad" width="300" height="300"></canvas>
-                    <div id="drawing-guide" class="guide-text"></div>
-                </div>
+            </section>
 
-                <div id="writing-feedback" class="feedback">Độ chính xác: --%</div>
+            <!-- TAB 2: LUYỆN VIẾT (DRAWING PAD) -->
+            <section id="writing" class="tab-content">
+                <div class="card writing-area">
+                    <div class="writing-header">
+                        <h3>Romaji: <span id="write-romaji-target">--</span></h3>
+                        <button id="btn-pronounce" class="action-btn primary small">🔊 Đọc âm</button>
+                    </div>
+                    
+                    <div class="canvas-container">
+                        <canvas id="drawing-pad" width="300" height="300"></canvas>
+                        <div id="drawing-guide" class="guide-text"></div>
+                    </div>
 
-                <div class="writing-controls">
-                    <button id="btn-clear" class="action-btn outline">Xóa</button>
-                    <button id="btn-check" class="action-btn primary">Kiểm tra</button>
-                    <button id="btn-next-write" class="action-btn outline">Tiếp theo</button>
-                </div>
-            </div>
-        </section>
+                    <div id="writing-feedback" class="feedback">Độ chính xác: --%</div>
 
-        <!-- TAB 3: HISTORY -->
-        <section id="history" class="tab-content">
-            <div class="card history-area">
-                <h3>Lịch sử luyện tập</h3>
-                <div class="table-responsive">
-                    <table id="history-table">
-                        <thead>
-                            <tr><th>Ký tự</th><th>Đúng</th><th>Sai</th><th>Độ chính xác</th></tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="writing-controls">
+                        <button id="btn-clear" class="action-btn outline">Xóa/Viết lại</button>
+                        <button id="btn-check" class="action-btn primary">Kiểm tra</button>
+                        <button id="btn-next-write" class="action-btn outline">Chữ tiếp</button>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- TAB 4: STATS -->
-        <section id="stats" class="tab-content">
-            <div class="card stats-area">
-                <h3>Tổng quan trọn đời</h3>
-                <div class="table-responsive">
-                    <table id="stats-table">
-                        <thead>
-                            <tr><th>Ký tự</th><th>Tổng</th><th>Đúng</th><th>Sai</th><th>%</th></tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+            <!-- TAB 3: LỊCH SỬ -->
+            <section id="history" class="tab-content">
+                <div class="card table-card">
+                    <h3>Lịch sử luyện tập</h3>
+                    <div class="table-responsive">
+                        <table id="history-table">
+                            <thead><tr><th>Ký tự</th><th>Đúng</th><th>Sai</th><th>Độ chính xác</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- TAB 4: THỐNG KÊ -->
+            <section id="stats" class="tab-content">
+                <div class="card table-card">
+                    <h3>Thống kê trọn đời</h3>
+                    <div class="table-responsive">
+                        <table id="stats-table">
+                            <thead><tr><th>Ký tự</th><th>Tổng</th><th>Đúng</th><th>Sai</th><th>%</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </div>
     </main>
 
-    <!-- Hidden canvas for pixel comparison -->
+    <!-- Canvas ẩn dùng để chấm điểm thuật toán -->
     <canvas id="hidden-canvas" width="300" height="300" style="display:none;"></canvas>
 
     <script src="app.js"></script>

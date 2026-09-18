@@ -5,52 +5,81 @@
     --bg: #f4f7f6;
     --card-bg: #ffffff;
     --text: #333333;
+    --border: #dddddd;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
-
 body { background-color: var(--bg); color: var(--text); overscroll-behavior-y: contain; }
 
-/* TAB BAR */
 header { background: var(--card-bg); box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-.tab-bar { display: flex; overflow-x: auto; white-space: nowrap; padding: 10px; gap: 10px; }
-.tab-btn { flex: 1; padding: 10px 15px; border: none; background: #eee; border-radius: 8px; font-weight: bold; color: #555; transition: 0.2s; }
-.tab-btn.active { background: var(--primary); color: white; }
+.main-tabs { display: flex; overflow-x: auto; white-space: nowrap; padding: 10px; gap: 8px; }
+.main-tab-btn { flex: 1; padding: 12px 10px; border: none; background: transparent; font-weight: bold; color: #666; border-bottom: 3px solid transparent; transition: 0.2s; cursor: pointer;}
+.main-tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
 
-main { padding: 15px; max-width: 600px; margin: 0 auto; }
+.app-container { display: flex; gap: 20px; align-items: flex-start; padding: 15px; max-width: 1000px; margin: 0 auto; }
+.sidebar { flex: 0 0 350px; position: sticky; top: 75px; }
+.content-area { flex: 1; width: 100%; }
+
 .tab-content { display: none; }
 .tab-content.active { display: block; }
+.card { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 
-.card { background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: center; }
+/* Nút Mini Tabs */
+.mini-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+.mini-tab-btn { flex: 1; padding: 8px; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; color: #666; font-size: 15px;}
+.mini-tab-btn.active { color: var(--primary); border-bottom: 2px solid var(--primary); font-weight: bold; }
 
-/* PRACTICE TAB */
-.settings-panel h3 { margin-bottom: 10px; font-size: 16px; }
-.checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; }
-.checkbox-group label { background: #e0ebf5; padding: 8px 12px; border-radius: 20px; font-size: 14px; display: flex; align-items: center; gap: 5px; }
+.sidebar-actions { display: flex; gap: 10px; margin-bottom: 15px; }
+.action-btn { padding: 10px 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; }
+.action-btn.small { padding: 6px 12px; font-size: 13px; }
+.action-btn.primary { background: var(--primary); color: white; }
+.action-btn.outline { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
 
-#kana-display { font-family: 'Klee One', sans-serif; font-size: 100px; line-height: 1; margin: 20px 0; color: #111; }
-.badge { font-weight: bold; color: var(--primary); font-size: 14px; }
+/* Bảng Chọn Bài (2 Cột giống ảnh mẫu) */
+.checkbox-scroll-area { max-height: 500px; overflow-y: auto; overflow-x: hidden; padding-right: 5px; }
+.checkbox-grid { display: flex; gap: 15px; }
+.checkbox-col { flex: 1; }
+.category-header { color: #0066cc; font-weight: bold; font-size: 14px; margin: 12px 0 8px 0; }
+.checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 8px; cursor: pointer; color: #333; }
+.checkbox-item input { width: 16px; height: 16px; cursor: pointer; }
+
+/* Khu vực chơi chính */
+.play-area { text-align: center; }
+.badge { font-weight: bold; color: #555; font-size: 14px; }
+#kana-display { font-family: 'Klee One', sans-serif; font-size: 120px; line-height: 1; margin: 20px 0; color: #000; }
 .feedback { font-size: 16px; font-weight: bold; min-height: 24px; margin-bottom: 15px; }
 
-#kana-input { width: 100%; font-size: 24px; padding: 15px; text-align: center; border: 2px solid #ccc; border-radius: 12px; transition: 0.3s; }
-#kana-input:focus { outline: none; border-color: var(--primary); }
+.input-group { display: flex; justify-content: center; gap: 10px; }
+#kana-input { width: 220px; font-size: 24px; padding: 12px; text-align: center; border: 2px solid #ccc; border-radius: 6px; outline: none;}
+#kana-input:focus { border-color: var(--primary); }
+.hint { font-size: 12px; color: #888; margin-top: 8px; }
 
-.stats-bar { display: flex; justify-content: space-between; margin-top: 20px; font-weight: bold; color: #666; }
+.stats-divider { height: 1px; background: #eee; margin: 20px 0; }
+.combo-text { font-size: 22px; font-weight: bold; color: gray; margin-bottom: 5px; }
+.score-text { font-size: 16px; margin-bottom: 5px; }
+.time-text { font-size: 12px; color: gray; }
 
-/* WRITING TAB */
+/* Luyện Viết (Drawing Pad) */
+.writing-area { max-width: 400px; margin: 0 auto; text-align: center; }
 .writing-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.writing-header h3 { font-size: 22px; color: var(--primary); }
-.action-btn { padding: 10px 15px; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; }
-.action-btn.primary { background: var(--primary); color: white; }
-.action-btn.outline { background: #eee; color: #333; }
-
-.canvas-container { position: relative; width: 300px; height: 300px; margin: 0 auto 15px auto; border: 2px dashed #bbb; border-radius: 12px; background: #fafafa; touch-action: none; /* Prevents scrolling while drawing */ }
+.writing-header h3 { font-size: 20px; color: var(--primary); margin:0;}
+.canvas-container { position: relative; width: 300px; height: 300px; margin: 0 auto 15px auto; border: 2px dashed #aaa; border-radius: 8px; background: #fafafa; touch-action: none; }
 #drawing-pad { position: absolute; top: 0; left: 0; z-index: 2; cursor: crosshair; }
-.guide-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Klee One', sans-serif; font-size: 200px; color: rgba(0,0,0,0.05); z-index: 1; pointer-events: none; }
-.writing-controls { display: flex; justify-content: center; gap: 10px; }
+.guide-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Klee One', sans-serif; font-size: 200px; color: rgba(0,0,0,0.06); z-index: 1; pointer-events: none; }
+.writing-controls { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 
-/* TABLES */
+/* Bảng */
+.table-card { text-align: center; }
+.table-card h3 { margin-bottom: 15px; color: var(--primary); }
 .table-responsive { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+table { width: 100%; border-collapse: collapse; }
 th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
 th { background: #f9f9f9; font-size: 14px; color: #555; }
+
+/* Tối ưu Mobile */
+@media (max-width: 768px) {
+    .app-container { flex-direction: column; gap: 15px; }
+    .sidebar { width: 100%; flex: none; position: static; }
+    /* Giới hạn độ cao sidebar trên đt để ko đẩy nội dung xuống quá sâu */
+    .checkbox-scroll-area { max-height: 180px; border: 1px solid #eee; padding: 5px; border-radius: 5px;}
+}

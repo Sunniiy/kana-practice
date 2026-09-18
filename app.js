@@ -1,55 +1,109 @@
 // =====================================================================
-// KANA DATABASE
+// DỮ LIỆU ĐẦY ĐỦ HIRAGANA VÀ KATAKANA
 // =====================================================================
-const KANA_DB = {
-    Hiragana: {
-        "Hàng A, Ka, Sa...": {
-            "あ":["a"], "い":["i"], "う":["u"], "え":["e"], "お":["o"],
-            "か":["ka"], "き":["ki"], "く":["ku"], "け":["ke"], "こ":["ko"],
-            "さ":["sa"], "し":["shi","si"], "す":["su"], "せ":["se"], "そ":["so"],
-            "た":["ta"], "ち":["chi","ti"], "つ":["tsu","tu"], "て":["te"], "と":["to"],
-            "な":["na"], "に":["ni"], "ぬ":["nu"], "ね":["ne"], "の":["no"],
-            "は":["ha"], "ひ":["hi"], "ふ":["fu","hu"], "へ":["he"], "ほ":["ho"],
-            "ま":["ma"], "み":["mi"], "む":["mu"], "め":["me"], "も":["mo"],
-            "や":["ya"], "ゆ":["yu"], "よ":["yo"],
-            "ら":["ra"], "り":["ri"], "る":["ru"], "れ":["re"], "ろ":["ro"],
-            "わ":["wa"], "を":["o","wo"], "ん":["n","nn"]
+const KANA_DATABASE = {
+    "Hiragana": {
+        "Cơ bản (Seion)": {
+            "Hàng A (a, i, u, e, o)": {"あ":["a","あ"], "い":["i","い"], "う":["u","う"], "え":["e","え"], "お":["o","お"]},
+            "Hàng Ka (ka, ki, ku...)": {"か":["ka","か"], "き":["ki","き"], "く":["ku","く"], "け":["ke","け"], "こ":["ko","こ"]},
+            "Hàng Sa (sa, shi, su...)": {"さ":["sa","さ"], "し":["shi","si","し"], "す":["su","す"], "せ":["se","せ"], "そ":["so","そ"]},
+            "Hàng Ta (ta, chi, tsu...)": {"た":["ta","た"], "ち":["chi","ti","ち"], "つ":["tsu","tu","つ"], "て":["te","て"], "と":["to","と"]},
+            "Hàng Na (na, ni, nu...)": {"な":["na","な"], "に":["ni","に"], "ぬ":["nu","ぬ"], "ね":["ne","ね"], "の":["no","の"]},
+            "Hàng Ha (ha, hi, fu...)": {"は":["ha","は"], "ひ":["hi","ひ"], "ふ":["fu","hu","ふ"], "へ":["he","へ"], "ほ":["ho","ほ"]},
+            "Hàng Ma (ma, mi, mu...)": {"ま":["ma","ま"], "み":["mi","み"], "む":["mu","む"], "め":["me","め"], "も":["mo","も"]},
+            "Hàng Ya (ya, yu, yo)": {"や":["ya","や"], "ゆ":["yu","ゆ"], "よ":["yo","よ"]},
+            "Hàng Ra (ra, ri, ru...)": {"ら":["ra","ら"], "り":["ri","り"], "る":["ru","る"], "れ":["re","れ"], "ろ":["ro","ろ"]},
+            "Hàng Wa, N (wa, o, n)": {"わ":["wa","わ"], "を":["o","wo","を"], "ん":["n","nn","ん"]}
+        },
+        "Âm đục & Bán đục (Dakuon)": {
+            "Hàng Ga (ga, gi, gu...)": {"が":["ga","が"], "ぎ":["gi","ぎ"], "ぐ":["gu","ぐ"], "げ":["ge","げ"], "ご":["go","ご"]},
+            "Hàng Za (za, ji, zu...)": {"ざ":["za","ざ"], "じ":["ji","zi","じ"], "ず":["zu","ず"], "ぜ":["ze","ぜ"], "ぞ":["zo","ぞ"]},
+            "Hàng Da (da, ji, zu...)": {"だ":["da","だ"], "ぢ":["ji","di","ぢ"], "づ":["zu","du","dzu","づ"], "で":["de","で"], "ど":["do","ど"]},
+            "Hàng Ba (ba, bi, bu...)": {"ば":["ba","ば"], "び":["bi","び"], "ぶ":["bu","ぶ"], "べ":["be","べ"], "ぼ":["bo","ぼ"]},
+            "Hàng Pa (pa, pi, pu...)": {"ぱ":["pa","ぱ"], "ぴ":["pi","ぴ"], "ぷ":["pu","ぷ"], "ぺ":["pe","ぺ"], "ぽ":["po","ぽ"]}
+        },
+        "Âm ghép (Yōon)": {
+            "Kya, Kyu, Kyo": {"きゃ":["kya","きゃ"], "きゅ":["kyu","きゅ"], "きょ":["kyo","きょ"]},
+            "Sha, Shu, Sho": {"しゃ":["sha","sya","しゃ"], "しゅ":["shu","syu","しゅ"], "しょ":["sho","syo","しょ"]},
+            "Cha, Chu, Cho": {"ちゃ":["cha","tya","ちゃ"], "ちゅ":["chu","tyu","ちゅ"], "ちょ":["cho","tyo","ちょ"]},
+            "Nya, Nyu, Nyo": {"にゃ":["nya","にゃ"], "にゅ":["nyu","にゅ"], "にょ":["nyo","にょ"]},
+            "Hya, Hyu, Hyo": {"ひゃ":["hya","ひゃ"], "ひゅ":["hyu","ひゅ"], "ひょ":["hyo","ひょ"]},
+            "Mya, Myu, Myo": {"みゃ":["mya","みゃ"], "みゅ":["myu","みゅ"], "みょ":["myo","みょ"]},
+            "Rya, Ryu, Ryo": {"りゃ":["rya","りゃ"], "りゅ":["ryu","りゅ"], "りょ":["ryo","りょ"]},
+            "Gya, Gyu, Gyo": {"ぎゃ":["gya","ぎゃ"], "ぎゅ":["gyu","ぎゅ"], "ぎょ":["gyo","ぎょ"]},
+            "Ja, Ju, Jo": {"じゃ":["ja","zya","jya","じゃ"], "じゅ":["ju","zyu","jyu","じゅ"], "じょ":["jo","zyo","jyo","じょ"]},
+            "Bya, Byu, Byo": {"びゃ":["bya","びゃ"], "びゅ":["byu","びゅ"], "びょ":["byo","びょ"]},
+            "Pya, Pyu, Pyo": {"ぴゃ":["pya","ぴゃ"], "ぴゅ":["pyu","ぴゅ"], "ぴょ":["pyo","ぴょ"]}
         }
     },
-    Katakana: {
-        "Hàng A, Ka, Sa...": {
-            "ア":["a"], "イ":["i"], "ウ":["u"], "エ":["e"], "オ":["o"],
-            "カ":["ka"], "キ":["ki"], "ク":["ku"], "ケ":["ke"], "コ":["ko"],
-            "サ":["sa"], "シ":["shi","si"], "ス":["su"], "セ":["se"], "ソ":["so"],
-            "タ":["ta"], "チ":["chi","ti"], "ツ":["tsu","tu"], "テ":["te"], "ト":["to"]
+    "Katakana": {
+        "Cơ bản (Seion)": {
+            "Hàng A (a, i, u, e, o)": {"ア":["a","ア"], "イ":["i","イ"], "ウ":["u","ウ"], "エ":["e","エ"], "オ":["o","オ"]},
+            "Hàng Ka (ka, ki, ku...)": {"カ":["ka","カ"], "キ":["ki","キ"], "ク":["ku","ク"], "ケ":["ke","ケ"], "コ":["ko","コ"]},
+            "Hàng Sa (sa, shi, su...)": {"サ":["sa","サ"], "シ":["shi","si","シ"], "ス":["su","ス"], "セ":["se","セ"], "ソ":["so","ソ"]},
+            "Hàng Ta (ta, chi, tsu...)": {"タ":["ta","タ"], "チ":["chi","ti","チ"], "ツ":["tsu","tu","ツ"], "テ":["te","テ"], "ト":["to","ト"]},
+            "Hàng Na (na, ni, nu...)": {"ナ":["na","ナ"], "ニ":["ni","ニ"], "ヌ":["nu","ヌ"], "ネ":["ne","ネ"], "ノ":["no","ノ"]},
+            "Hàng Ha (ha, hi, fu...)": {"ハ":["ha","ハ"], "ヒ":["hi","ヒ"], "フ":["fu","hu","フ"], "ヘ":["he","ヘ"], "ホ":["ho","ホ"]},
+            "Hàng Ma (ma, mi, mu...)": {"マ":["ma","マ"], "ミ":["mi","ミ"], "ム":["mu","ム"], "メ":["me","メ"], "モ":["mo","モ"]},
+            "Hàng Ya (ya, yu, yo)": {"ヤ":["ya","ヤ"], "ユ":["yu","ユ"], "ヨ":["yo","ヨ"]},
+            "Hàng Ra (ra, ri, ru...)": {"ラ":["ra","ラ"], "リ":["ri","リ"], "ル":["ru","ル"], "レ":["re","レ"], "ロ":["ro","ロ"]},
+            "Hàng Wa, N (wa, o, n)": {"ワ":["wa","ワ"], "ヲ":["o","wo","ヲ"], "ン":["n","nn","ン"]}
+        },
+        "Âm đục & Bán đục (Dakuon)": {
+            "Hàng Ga (ga, gi, gu...)": {"ガ":["ga","ガ"], "ギ":["gi","ギ"], "グ":["gu","グ"], "ゲ":["ge","ゲ"], "ゴ":["go","ゴ"]},
+            "Hàng Za (za, ji, zu...)": {"ザ":["za","ザ"], "ジ":["ji","zi","ジ"], "ズ":["zu","ズ"], "ゼ":["ze","ゼ"], "ゾ":["zo","ゾ"]},
+            "Hàng Da (da, ji, zu...)": {"ダ":["da","ダ"], "ヂ":["ji","di","ヂ"], "ヅ":["zu","du","dzu","ヅ"], "デ":["de","デ"], "ド":["do","ド"]},
+            "Hàng Ba (ba, bi, bu...)": {"バ":["ba","バ"], "ビ":["bi","ビ"], "ブ":["bu","ブ"], "ベ":["be","ベ"], "ボ":["bo","ボ"]},
+            "Hàng Pa (pa, pi, pu...)": {"パ":["pa","パ"], "ピ":["pi","ピ"], "プ":["pu","プ"], "ペ":["pe","ペ"], "ポ":["po","ポ"]}
+        },
+        "Âm ghép (Yōon)": {
+            "Kya, Kyu, Kyo": {"キャ":["kya","キャ"], "キュ":["kyu","キュ"], "キョ":["kyo","キョ"]},
+            "Sha, Shu, Sho": {"シャ":["sha","sya","シャ"], "シュ":["shu","syu","シュ"], "ショ":["sho","syo","ショ"]},
+            "Cha, Chu, Cho": {"チャ":["cha","tya","チャ"], "チュ":["chu","tyu","チュ"], "チョ":["cho","tyo","チョ"]},
+            "Nya, Nyu, Nyo": {"ニャ":["nya","ニャ"], "ニュ":["nyu","ニュ"], "ニョ":["nyo","ニョ"]},
+            "Hya, Hyu, Hyo": {"ヒャ":["hya","ヒャ"], "ヒュ":["hyu","ヒュ"], "ヒョ":["hyo","ヒョ"]},
+            "Mya, Myu, Myo": {"ミャ":["mya","ミャ"], "ミュ":["myu","ミュ"], "ミョ":["myo","ミョ"]},
+            "Rya, Ryu, Ryo": {"リャ":["rya","リャ"], "リュ":["ryu","リュ"], "リョ":["ryo","リョ"]},
+            "Gya, Gyu, Gyo": {"ギャ":["gya","ギャ"], "ギュ":["gyu","ギュ"], "ギョ":["gyo","ギョ"]},
+            "Ja, Ju, Jo": {"ジャ":["ja","zya","jya","ジャ"], "ジュ":["ju","zyu","jyu","ジュ"], "ジョ":["jo","zyo","jyo","ジョ"]},
+            "Bya, Byu, Byo": {"ビャ":["bya","ビャ"], "ビュ":["byu","ビュ"], "ビョ":["byo","ビョ"]},
+            "Pya, Pyu, Pyo": {"ピャ":["pya","ピャ"], "ピュ":["pyu","ピュ"], "ピョ":["pyo","ピョ"]}
         }
     }
 };
 
+const checkboxStates = {};
+
 // =====================================================================
-// STATE & STORAGE
+// BIẾN TOÀN CỤC & INIT
 // =====================================================================
 let activePool = [];
+let currentTabScript = "Hiragana";
 let currentChar = "", currentAnswers = [], currentScript = "";
-let combo = 0, correctCount = 0, wrongCount = 0;
-let historyData = JSON.parse(localStorage.getItem('kanaHistory')) || {};
+let combo = 0, correctCount = 0, wrongCount = 0, reactionTimes = [], startTime = 0, isWaiting = false;
+let historyData = JSON.parse(localStorage.getItem('kanaHistoryData')) || {};
 
-// =====================================================================
-// INITIALIZATION
-// =====================================================================
 document.addEventListener("DOMContentLoaded", () => {
-    initTabs();
-    initCheckboxes();
+    initMainTabs();
+    initMiniTabs();
+    renderCheckboxes();
     initDrawingPad();
-    updatePool();
-
-    document.getElementById("kana-input").addEventListener("input", handlePracticeInput);
+    
+    document.getElementById("btn-select-all").addEventListener("click", () => toggleAll(true));
+    document.getElementById("btn-deselect-all").addEventListener("click", () => toggleAll(false));
+    document.getElementById("kana-input").addEventListener("input", handleInput);
     document.getElementById("btn-pronounce").addEventListener("click", playPronunciation);
+    
+    updatePool();
 });
 
-function initTabs() {
-    const btns = document.querySelectorAll('.tab-btn');
+// -------------------------------------------------------------
+// UI ĐIỀU HƯỚNG TABS
+// -------------------------------------------------------------
+function initMainTabs() {
+    const btns = document.querySelectorAll('.main-tab-btn');
     const contents = document.querySelectorAll('.tab-content');
+    const sidebar = document.getElementById('main-sidebar');
 
     btns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -57,44 +111,121 @@ function initTabs() {
             contents.forEach(c => c.classList.remove('active'));
             
             btn.classList.add('active');
-            document.getElementById(btn.dataset.target).classList.add('active');
+            const target = btn.dataset.target;
+            document.getElementById(target).classList.add('active');
 
-            if (btn.dataset.target === 'history') renderHistory();
-            if (btn.dataset.target === 'stats') renderStats();
+            // Hiển thị Sidebar ở Luyện tập & Luyện viết. Ẩn ở Lịch sử & Thống kê
+            if (target === 'history' || target === 'stats') {
+                sidebar.style.display = 'none';
+                if (target === 'history') renderHistory();
+                if (target === 'stats') renderStats();
+            } else {
+                sidebar.style.display = 'block';
+                if (target === 'practice') document.getElementById('kana-input').focus();
+            }
         });
     });
 }
 
-function initCheckboxes() {
-    const container = document.getElementById('pool-selection');
-    Object.keys(KANA_DB).forEach(script => {
-        const lbl = document.createElement('label');
-        lbl.innerHTML = `<input type="checkbox" value="${script}" checked onchange="updatePool()"> ${script}`;
-        container.appendChild(lbl);
+function initMiniTabs() {
+    const miniBtns = document.querySelectorAll('.mini-tab-btn');
+    miniBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            miniBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTabScript = btn.dataset.script;
+            renderCheckboxes();
+        });
     });
 }
 
-// =====================================================================
-// TAB 1: PRACTICE LOGIC
-// =====================================================================
+// -------------------------------------------------------------
+// RENDER CHECKBOX (2 CỘT)
+// -------------------------------------------------------------
+function renderCheckboxes() {
+    const colLeft = document.getElementById('col-left');
+    const colRight = document.getElementById('col-right');
+    colLeft.innerHTML = ""; colRight.innerHTML = "";
+    
+    const categories = KANA_DATABASE[currentTabScript];
+    if(!categories) return;
+
+    for (let catName in categories) {
+        // Âm ghép đưa sang cột phải, còn lại cột trái
+        const targetCol = catName.includes("Âm ghép") ? colRight : colLeft;
+        
+        const header = document.createElement('div');
+        header.className = 'category-header';
+        header.innerText = `【 ${catName} 】`;
+        targetCol.appendChild(header);
+
+        for (let groupName in categories[catName]) {
+            const label = document.createElement('label');
+            label.className = 'checkbox-item';
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'group-checkbox';
+            checkbox.dataset.script = currentTabScript;
+            checkbox.dataset.category = catName;
+            checkbox.dataset.group = groupName;
+            
+            // Check các mục nếu đang activePool hoặc theo mặc định Hiragana
+            // Để đơn giản, khi mới tải tự đánh dấu Hiragana
+            const stateKey = `${currentTabScript}_${catName}_${groupName}`;
+            // Nếu chưa từng lưu thì mặc định: Hiragana bật, Katakana tắt
+            if (checkboxStates[stateKey] === undefined) {
+                checkboxStates[stateKey] = (currentTabScript === "Hiragana");
+            }
+            checkbox.checked = checkboxStates[stateKey];
+
+            checkbox.addEventListener('change', (e) => {
+                checkboxStates[stateKey] = e.target.checked;
+                updatePool();
+            });
+
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(groupName));
+            targetCol.appendChild(label);
+        }
+    }
+}
+
+function toggleAll(state) {
+    const checkboxes = document.querySelectorAll('.group-checkbox');
+    checkboxes.forEach(cb => {
+        if(cb.dataset.script === currentTabScript) {
+            cb.checked = state;
+            const stateKey = `${cb.dataset.script}_${cb.dataset.category}_${cb.dataset.group}`;
+            checkboxStates[stateKey] = state;
+        }
+    });
+    updatePool();
+}
+
+// -------------------------------------------------------------
+// LOGIC LUYỆN TẬP PHẢN XẠ & CẬP NHẬT TỪ (CẢ 2 TAB CHIA SẺ CHUNG POOL)
+// -------------------------------------------------------------
 function updatePool() {
     activePool = [];
-    const checkboxes = document.querySelectorAll('#pool-selection input:checked');
-    const selectedScripts = Array.from(checkboxes).map(cb => cb.value);
-
-    selectedScripts.forEach(script => {
-        const groups = KANA_DB[script];
-        for (let group in groups) {
-            for (let char in groups[group]) {
-                activePool.push({ char, answers: groups[group][char], script });
+    const checkboxes = document.querySelectorAll('.group-checkbox'); 
+    
+    checkboxes.forEach(cb => {
+        if (cb.checked) {
+            const chars = KANA_DATABASE[cb.dataset.script][cb.dataset.category][cb.dataset.group];
+            for (let char in chars) {
+                activePool.push({ char: char, answers: chars[char], script: cb.dataset.script });
             }
         }
     });
 
     if (activePool.length === 0) {
         document.getElementById('kana-display').innerText = "-";
-        document.getElementById('feedback').innerText = "Vui lòng chọn ít nhất 1 bảng!";
+        document.getElementById('feedback').innerText = "Vui lòng tick chọn ít nhất 1 nhóm!";
         document.getElementById('feedback').style.color = "red";
+        document.getElementById('script-badge').innerText = "";
+        currentChar = "";
+        document.getElementById('write-romaji-target').innerText = "--";
     } else {
         document.getElementById('feedback').innerText = "";
         nextKana();
@@ -108,50 +239,74 @@ function nextKana() {
     currentAnswers = rnd.answers;
     currentScript = rnd.script;
 
+    // Cập nhật giao diện Tab Luyện Tập
     document.getElementById('kana-display').innerText = currentChar;
     document.getElementById('script-badge').innerText = `[${currentScript}]`;
     document.getElementById('kana-input').value = "";
+    isWaiting = false;
+    startTime = Date.now();
     
-    // Also sync the writing pad
-    nextWriteKana(currentChar, currentAnswers[0]);
+    // Đồng thời cập nhật giao diện Tab Luyện Viết
+    document.getElementById('write-romaji-target').innerText = currentAnswers[0];
+    clearPad();
 }
 
-function handlePracticeInput(e) {
+function handleInput(e) {
+    if (!currentChar || isWaiting) return;
     const input = e.target.value.trim().toLowerCase();
-    const feedback = document.getElementById('feedback');
-
-    if (currentAnswers.includes(input) || input === currentChar) {
-        combo++;
-        correctCount++;
-        saveData(currentChar, currentScript, true);
-        feedback.innerText = "Chính xác!";
-        feedback.style.color = "green";
-        updateStatsUI();
-        setTimeout(nextKana, 250);
+    
+    if (currentAnswers.includes(input)) {
+        processCorrect();
     } else if (input.length >= currentAnswers[0].length && !currentAnswers.some(ans => ans.startsWith(input))) {
-        // Only trigger wrong if they typed enough chars and it's definitely wrong
-        combo = 0;
-        wrongCount++;
-        saveData(currentChar, currentScript, false);
-        feedback.innerText = `Sai! Đáp án: ${currentAnswers[0]}`;
-        feedback.style.color = "red";
-        e.target.value = "";
-        updateStatsUI();
-        setTimeout(nextKana, 1500);
+        processWrong();
     }
 }
 
-function updateStatsUI() {
-    document.getElementById('combo-display').innerText = `Combo: ${combo}`;
-    document.getElementById('score-display').innerText = `✅ ${correctCount} | ❌ ${wrongCount}`;
+function processCorrect() {
+    isWaiting = true;
+    const reactTime = (Date.now() - startTime) / 1000;
+    combo++; correctCount++; reactionTimes.push(reactTime);
+    saveData(currentChar, currentScript, true, reactTime);
+    
+    const fb = document.getElementById('feedback');
+    fb.innerText = "Chính xác!"; fb.style.color = "green";
+    updateStatsUI();
+    setTimeout(() => { fb.innerText = ""; nextKana(); }, 250);
 }
 
-// =====================================================================
-// TAB 2: WRITING PAD & ALGORITHM
-// =====================================================================
+function processWrong() {
+    isWaiting = true;
+    combo = 0; wrongCount++;
+    saveData(currentChar, currentScript, false, null);
+    
+    const fb = document.getElementById('feedback');
+    fb.innerText = `Sai! Đáp án: ${currentAnswers[0]} / ${currentChar}`; fb.style.color = "red";
+    
+    document.getElementById('kana-input').value = "";
+    updateStatsUI();
+    setTimeout(() => { fb.innerText = ""; nextKana(); }, 1400);
+}
+
+function updateStatsUI() {
+    const comboEl = document.getElementById('combo-display');
+    comboEl.innerText = `Combo: ${combo}`;
+    comboEl.style.color = combo >= 15 ? 'red' : (combo >= 10 ? 'orange' : (combo >= 5 ? 'blue' : 'gray'));
+    
+    document.getElementById('score-display').innerText = `✅ Đúng: ${correctCount} | ❌ Sai: ${wrongCount}`;
+    
+    if (reactionTimes.length > 0) {
+        const min = Math.min(...reactionTimes).toFixed(2);
+        const max = Math.max(...reactionTimes).toFixed(2);
+        const avg = (reactionTimes.reduce((a,b)=>a+b,0) / reactionTimes.length).toFixed(2);
+        document.getElementById('time-display').innerText = `⏱ Nhanh nhất: ${min}s | Chậm nhất: ${max}s | TB: ${avg}s`;
+    }
+}
+
+// -------------------------------------------------------------
+// LUYỆN VIẾT & CHẤM ĐIỂM BẰNG THUẬT TOÁN (PIXEL OVERLAP)
+// -------------------------------------------------------------
 let canvas, ctx, hiddenCanvas, hiddenCtx;
 let isDrawing = false;
-let currentWriteChar = "", currentWriteRomaji = "";
 
 function initDrawingPad() {
     canvas = document.getElementById('drawing-pad');
@@ -159,53 +314,35 @@ function initDrawingPad() {
     hiddenCanvas = document.getElementById('hidden-canvas');
     hiddenCtx = hiddenCanvas.getContext('2d');
 
-    // Setup Canvas styles
-    ctx.lineWidth = 12;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#000';
 
-    // Mouse Events
+    // Desktop
     canvas.addEventListener('mousedown', startPos);
     canvas.addEventListener('mouseup', endPos);
     canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseleave', endPos);
 
-    // Touch Events for Mobile
+    // Mobile (Cấm cuộn trang khi vẽ)
     canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPos(e.touches[0]); }, {passive: false});
     canvas.addEventListener('touchend', (e) => { e.preventDefault(); endPos(); }, {passive: false});
     canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); }, {passive: false});
 
     document.getElementById('btn-clear').addEventListener('click', clearPad);
     document.getElementById('btn-check').addEventListener('click', checkDrawing);
-    document.getElementById('btn-next-write').addEventListener('click', () => { clearPad(); nextKana(); });
+    document.getElementById('btn-next-write').addEventListener('click', () => { nextKana(); });
 }
 
-function nextWriteKana(char, romaji) {
-    currentWriteChar = char;
-    currentWriteRomaji = romaji;
-    document.getElementById('write-romaji-target').innerText = romaji;
-    document.getElementById('drawing-guide').innerText = ""; // Optional: set to char for tracing
-    clearPad();
-}
-
-function startPos(e) {
-    isDrawing = true;
-    draw(e);
-}
-function endPos() {
-    isDrawing = false;
-    ctx.beginPath();
-}
+function startPos(e) { isDrawing = true; draw(e); }
+function endPos() { isDrawing = false; ctx.beginPath(); }
 function draw(e) {
     if (!isDrawing) return;
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x, y);
+    ctx.lineTo(x, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y);
 }
+
 function clearPad() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById('writing-feedback').innerText = "Độ chính xác: --%";
@@ -214,114 +351,96 @@ function clearPad() {
 }
 
 function playPronunciation() {
-    if (!('speechSynthesis' in window)) return alert("Trình duyệt không hỗ trợ đọc âm thanh!");
-    let utterance = new SpeechSynthesisUtterance(currentWriteChar); // Read the Kana character natively
-    utterance.lang = 'ja-JP';
-    utterance.rate = 0.8;
+    if (!('speechSynthesis' in window)) return alert("Trình duyệt không hỗ trợ đọc âm!");
+    if (!currentChar) return;
+    let utterance = new SpeechSynthesisUtterance(currentChar);
+    utterance.lang = 'ja-JP'; utterance.rate = 0.8;
     window.speechSynthesis.speak(utterance);
 }
 
-// The Pixel Comparison Logic
 function checkDrawing() {
-    // 1. Render the perfect font on the hidden canvas
+    if(!currentChar) return;
+    // Vẽ nét chữ mẫu lên canvas ẩn
     hiddenCtx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
-    hiddenCtx.font = "200px 'Klee One', sans-serif";
-    hiddenCtx.textAlign = "center";
-    hiddenCtx.textBaseline = "middle";
+    hiddenCtx.font = "220px 'Klee One', sans-serif";
+    hiddenCtx.textAlign = "center"; hiddenCtx.textBaseline = "middle";
     hiddenCtx.fillStyle = "#000";
-    hiddenCtx.fillText(currentWriteChar, 150, 150);
+    hiddenCtx.fillText(currentChar, 150, 150);
 
-    // 2. Get ImageData arrays
     const userImg = ctx.getImageData(0, 0, 300, 300).data;
     const targetImg = hiddenCtx.getImageData(0, 0, 300, 300).data;
+    let overlap = 0, totalTarget = 0, totalUser = 0;
 
-    let overlap = 0;
-    let totalTargetPixels = 0;
-    let totalUserPixels = 0;
-
-    // 3. Pixel matching (Looking at Alpha channel every 4th element)
     for (let i = 3; i < userImg.length; i += 4) {
-        const isUserFilled = userImg[i] > 50;
-        const isTargetFilled = targetImg[i] > 50;
-
-        if (isTargetFilled) totalTargetPixels++;
-        if (isUserFilled) totalUserPixels++;
-        if (isUserFilled && isTargetFilled) overlap++;
+        const u = userImg[i] > 50;
+        const t = targetImg[i] > 50;
+        if (t) totalTarget++;
+        if (u) totalUser++;
+        if (u && t) overlap++;
     }
 
-    if (totalUserPixels === 0) {
-        alert("Vui lòng vẽ chữ trước khi kiểm tra!");
-        return;
-    }
+    if (totalUser === 0) return alert("Vui lòng viết chữ vào bảng trước khi kiểm tra!");
 
-    // 4. Calculate Score (Intersection / Target)
-    // To be forgiving for handwriting thickness, we divide overlap by target size
-    let score = (overlap / totalTargetPixels) * 100;
-    
-    // Penalty if they just scribble the whole screen black
-    if (totalUserPixels > totalTargetPixels * 2.5) {
-        score -= (totalUserPixels - totalTargetPixels * 2.5) / 100;
-    }
+    let score = (overlap / totalTarget) * 100;
+    // Phạt % nếu người dùng bôi đen cả bảng
+    if (totalUser > totalTarget * 2.5) score -= (totalUser - totalTarget * 2.5) / 100;
+    score = Math.max(0, Math.min(100, score));
 
-    score = Math.max(0, Math.min(100, score)); // Clamp 0-100
+    const fb = document.getElementById('writing-feedback');
+    fb.innerText = `Độ chính xác: ${score.toFixed(1)}%`;
+    fb.style.color = score > 60 ? "green" : "red";
 
-    const feedback = document.getElementById('writing-feedback');
-    feedback.innerText = `Độ chính xác: ${score.toFixed(1)}%`;
-    feedback.style.color = score > 60 ? "green" : "red";
-
-    // Show the target faintly behind the user's drawing so they see where they missed
-    document.getElementById('drawing-guide').innerText = currentWriteChar;
+    // Hiển thị bóng chữ mờ làm tham chiếu để biết vẽ sai nét nào
+    document.getElementById('drawing-guide').innerText = currentChar;
 }
 
-// =====================================================================
-// DATA STORAGE & STATS TABLES
-// =====================================================================
-function saveData(char, script, isCorrect) {
-    if (!historyData[char]) {
-        historyData[char] = { correct: 0, wrong: 0, script: script };
+// -------------------------------------------------------------
+// LƯU DỮ LIỆU & BẢNG THỐNG KÊ (TAB 3 & 4)
+// -------------------------------------------------------------
+function saveData(char, script, isCorrect, reactTime) {
+    if (!historyData[char]) historyData[char] = { script: script, correct: 0, wrong: 0, times: [] };
+    if (isCorrect) {
+        historyData[char].correct++;
+        if(reactTime) historyData[char].times.push(reactTime);
+    } else {
+        historyData[char].wrong++;
     }
-    if (isCorrect) historyData[char].correct++;
-    else historyData[char].wrong++;
-
-    localStorage.setItem('kanaHistory', JSON.stringify(historyData));
+    localStorage.setItem('kanaHistoryData', JSON.stringify(historyData));
 }
 
 function renderHistory() {
     const tbody = document.querySelector('#history-table tbody');
     tbody.innerHTML = "";
-    Object.keys(historyData).forEach(char => {
+    const sortedChars = Object.keys(historyData).sort((a, b) => historyData[b].wrong - historyData[a].wrong);
+    
+    sortedChars.forEach(char => {
         const d = historyData[char];
         const total = d.correct + d.wrong;
         const acc = total === 0 ? 0 : Math.round((d.correct / total) * 100);
-        
-        tbody.innerHTML += `
-            <tr>
-                <td style="font-size: 20px;">${char}</td>
-                <td style="color: green;">${d.correct}</td>
-                <td style="color: red;">${d.wrong}</td>
-                <td>${acc}%</td>
-            </tr>
-        `;
+        tbody.innerHTML += `<tr>
+            <td style="font-size: 20px;">${char}</td>
+            <td style="color: green;">${d.correct}</td>
+            <td style="color: red;">${d.wrong}</td>
+            <td>${acc}%</td>
+        </tr>`;
     });
 }
 
 function renderStats() {
-    // Similar to history, but you can expand this to group by Hiragana/Katakana
     const tbody = document.querySelector('#stats-table tbody');
     tbody.innerHTML = "";
-    Object.keys(historyData).forEach(char => {
+    const sortedChars = Object.keys(historyData).sort((a, b) => historyData[b].wrong - historyData[a].wrong);
+    
+    sortedChars.forEach(char => {
         const d = historyData[char];
         const total = d.correct + d.wrong;
         const acc = total === 0 ? 0 : Math.round((d.correct / total) * 100);
-        
-        tbody.innerHTML += `
-            <tr>
-                <td style="font-size: 20px;">${char}</td>
-                <td>${total}</td>
-                <td style="color: green;">${d.correct}</td>
-                <td style="color: red;">${d.wrong}</td>
-                <td>${acc}%</td>
-            </tr>
-        `;
+        tbody.innerHTML += `<tr>
+            <td style="font-size: 20px;">${char}</td>
+            <td>${total}</td>
+            <td style="color: green;">${d.correct}</td>
+            <td style="color: red;">${d.wrong}</td>
+            <td>${acc}%</td>
+        </tr>`;
     });
 }
