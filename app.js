@@ -175,7 +175,7 @@ function renderCheckboxes() {
             const stateKey = `${currentTabScript}_${catName}_${groupName}`;
             // Nếu chưa từng lưu thì mặc định: Hiragana bật, Katakana tắt
             if (checkboxStates[stateKey] === undefined) {
-                checkboxStates[stateKey] = (currentTabScript === "Hiragana");
+                checkboxStates[stateKey] = false;
             }
             checkbox.checked = checkboxStates[stateKey];
 
@@ -314,7 +314,7 @@ function initDrawingPad() {
     hiddenCanvas = document.getElementById('hidden-canvas');
     hiddenCtx = hiddenCanvas.getContext('2d');
 
-    ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#000';
+    ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#fff';
 
     // Desktop
     canvas.addEventListener('mousedown', startPos);
@@ -358,17 +358,83 @@ function playPronunciation() {
     window.speechSynthesis.speak(utterance);
 }
 
+// Hàm phụ trợ: Tìm khung giới hạn (Bounding Box) của nét vẽ để căn giữa
+function getBoundingBox(imgData, width, height) {
+    let minX = width, minY = height, maxX = 0, maxY = 0;
+    let found = false;
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            let alpha = imgData.data[(y * width + x) * 4 + 3];
+            if (alpha > 50) {
+                found = true;
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+                if (y < minY) minY = y;
+                if (y > maxY) maxY = y;
+            }
+        }
+    }
+    if (!found) return null;
+    return { w: maxX - minX, h: maxY - minY, cX: minX + (maxX - minX) / 2, cY: minY + (maxY - minY) / 2 };
+}
+
 function checkDrawing() {
     if(!currentChar) return;
-    // Vẽ nét chữ mẫu lên canvas ẩn
+    
+    // 1. VẼ CHỮ GỐC (Dày hơn để dễ khớp nét)
     hiddenCtx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
     hiddenCtx.font = "220px 'Klee One', sans-serif";
-    hiddenCtx.textAlign = "center"; hiddenCtx.textBaseline = "middle";
+    hiddenCtx.textAlign = "center"; 
+    hiddenCtx.textBaseline = "middle";
     hiddenCtx.fillStyle = "#000";
+    
+    // Tạo nét viền (stroke) để chữ gốc dày hơn (Bigger stroke)
+    hiddenCtx.lineWidth = 15; 
+    hiddenCtx.strokeStyle = "#000";
+    hiddenCtx.lineJoin = "round";
+    hiddenCtx.strokeText(currentChar, 150, 150);
     hiddenCtx.fillText(currentChar, 150, 150);
 
-    const userImg = ctx.getImageData(0, 0, 300, 300).data;
-    const targetImg = hiddenCtx.getImageData(0, 0, 300, 300).data;
+    let userImgData = ctx.getImageData(0, 0, 300, 300);
+    let targetImgData = hiddenCtx.getImageData(0, 0, 300, 300);
+    
+    // 2. AUTO SCALE & POSITION (Tự căn chỉnh vị trí & kích cỡ nét vẽ của user)
+    const userBB = getBoundingBox(userImgData, 300, 300);
+    const targetBB = getBoundingBox(targetImgData, 300, 300);
+
+    if (!userBB) return alert("Vui lòng viết chữ vào bảng trước khi kiểm tra!");
+
+    if (userBB && targetBB) {
+        // Tính tỷ lệ phóng to/thu nhỏ
+        let scaleX = targetBB.w / (userBB.w || 1);
+        let scaleY = targetBB.h / (userBB.h || 1);
+        let scale = Math.min(scaleX, scaleY);
+        
+        // Giới hạn không phóng quá to hoặc thu quá nhỏ
+        if (scale > 1.8) scale = 1.8; 
+        if (scale < 0.6) scale = 0.6;
+
+        // Lưu bản nháp nét vẽ của user vào canvas tạm
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = 300; tempCanvas.height = 300;
+        tempCanvas.getContext('2d').putImageData(userImgData, 0, 0);
+
+        // Xóa bảng chính và vẽ lại nét user (đã căn giữa và phóng to)
+        ctx.clearRect(0, 0, 300, 300);
+        ctx.save();
+        ctx.translate(targetBB.cX, targetBB.cY); // Đưa tâm về giữa chữ gốc
+        ctx.scale(scale, scale);
+        ctx.translate(-userBB.cX, -userBB.cY);   // Kéo tâm chữ user về gốc 0,0
+        ctx.drawImage(tempCanvas, 0, 0);
+        ctx.restore();
+
+        // Lấy lại dữ liệu ảnh SAU KHI đã tự động căn giữa để chấm điểm
+        userImgData = ctx.getImageData(0, 0, 300, 300);
+    }
+
+    // 3. CHẤM ĐIỂM (Pixel Overlap)
+    const userImg = userImgData.data;
+    const targetImg = targetImgData.data;
     let overlap = 0, totalTarget = 0, totalUser = 0;
 
     for (let i = 3; i < userImg.length; i += 4) {
@@ -379,19 +445,29 @@ function checkDrawing() {
         if (u && t) overlap++;
     }
 
-    if (totalUser === 0) return alert("Vui lòng viết chữ vào bảng trước khi kiểm tra!");
-
     let score = (overlap / totalTarget) * 100;
-    // Phạt % nếu người dùng bôi đen cả bảng
-    if (totalUser > totalTarget * 2.5) score -= (totalUser - totalTarget * 2.5) / 100;
+    if (totalUser > totalTarget * 2.5) score -= (totalUser - totalTarget * 2.5) / 100; // Phạt nét thừa
     score = Math.max(0, Math.min(100, score));
 
     const fb = document.getElementById('writing-feedback');
     fb.innerText = `Độ chính xác: ${score.toFixed(1)}%`;
-    fb.style.color = score > 60 ? "green" : "red";
+    fb.style.color = score > 60 ? "var(--success)" : "var(--danger)";
 
-    // Hiển thị bóng chữ mờ làm tham chiếu để biết vẽ sai nét nào
+    // Hiện bóng chữ gốc đè lên nét user
     document.getElementById('drawing-guide').innerText = currentChar;
+
+    // 4. AUTO-SKIP SAU 2 GIÂY (Chỉ lưu vào stats nếu điểm trên 60%)
+    if (score >= 60) {
+        saveData(currentChar, currentScript, true, null); // Lưu data đúng
+        setTimeout(() => {
+            // Kiểm tra xem người dùng có bấm qua chữ khác trong 2s đó không
+            if (document.getElementById('write-romaji-target').innerText === currentWriteRomaji) {
+                document.getElementById('btn-next-write').click();
+            }
+        }, 2000);
+    } else {
+        saveData(currentChar, currentScript, false, null); // Lưu data sai
+    }
 }
 
 // -------------------------------------------------------------
