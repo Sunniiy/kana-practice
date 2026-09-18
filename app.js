@@ -208,16 +208,19 @@ function toggleAll(state) {
 // -------------------------------------------------------------
 function updatePool() {
     activePool = [];
-    const checkboxes = document.querySelectorAll('.group-checkbox'); 
     
-    checkboxes.forEach(cb => {
-        if (cb.checked) {
-            const chars = KANA_DATABASE[cb.dataset.script][cb.dataset.category][cb.dataset.group];
-            for (let char in chars) {
-                activePool.push({ char: char, answers: chars[char], script: cb.dataset.script });
+    // Duyệt qua toàn bộ trạng thái đã lưu trong bộ nhớ checkboxStates
+    for (const [stateKey, isChecked] of Object.entries(checkboxStates)) {
+        if (isChecked) {
+            const [script, catName, groupName] = stateKey.split('_');
+            if (KANA_DATABASE[script] && KANA_DATABASE[script][catName] && KANA_DATABASE[script][catName][groupName]) {
+                const chars = KANA_DATABASE[script][catName][groupName];
+                for (let char in chars) {
+                    activePool.push({ char: char, answers: chars[char], script: script });
+                }
             }
         }
-    });
+    }
 
     if (activePool.length === 0) {
         document.getElementById('kana-display').innerText = "-";
