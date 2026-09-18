@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Japanese Kana Master</title>
+    <!-- Klee One Font for Textbook Handwritten Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="tab-bar">
+            <button class="tab-btn active" data-target="practice">🎯 Luyện Tập</button>
+            <button class="tab-btn" data-target="writing">✍️ Luyện Viết</button>
+            <button class="tab-btn" data-target="history">📅 Lịch Sử</button>
+            <button class="tab-btn" data-target="stats">📊 Thống Kê</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- TAB 1: PRACTICE -->
+        <section id="practice" class="tab-content active">
+            <div class="settings-panel">
+                <h3>Chọn bộ chữ:</h3>
+                <div class="checkbox-group" id="pool-selection">
+                    <!-- Checkboxes injected via JS -->
+                </div>
+            </div>
+            
+            <div class="card practice-area">
+                <div id="script-badge" class="badge"></div>
+                <div id="kana-display">-</div>
+                <div id="feedback" class="feedback">Vui lòng chọn ít nhất 1 nhóm!</div>
+                
+                <input type="text" id="kana-input" placeholder="Gõ Romaji hoặc Kana" autocomplete="off" autocorrect="off" autocapitalize="none">
+                
+                <div class="stats-bar">
+                    <span id="combo-display">Combo: 0</span>
+                    <span id="score-display">✅ 0 | ❌ 0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: WRITING PRACTICE -->
+        <section id="writing" class="tab-content">
+            <div class="card writing-area">
+                <div class="writing-header">
+                    <h3>Romaji: <span id="write-romaji-target">--</span></h3>
+                    <button id="btn-pronounce" class="action-btn">🔊 Đọc âm</button>
+                </div>
+                
+                <div class="canvas-container">
+                    <canvas id="drawing-pad" width="300" height="300"></canvas>
+                    <div id="drawing-guide" class="guide-text"></div>
+                </div>
+
+                <div id="writing-feedback" class="feedback">Độ chính xác: --%</div>
+
+                <div class="writing-controls">
+                    <button id="btn-clear" class="action-btn outline">Xóa</button>
+                    <button id="btn-check" class="action-btn primary">Kiểm tra</button>
+                    <button id="btn-next-write" class="action-btn outline">Tiếp theo</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: HISTORY -->
+        <section id="history" class="tab-content">
+            <div class="card history-area">
+                <h3>Lịch sử luyện tập</h3>
+                <div class="table-responsive">
+                    <table id="history-table">
+                        <thead>
+                            <tr><th>Ký tự</th><th>Đúng</th><th>Sai</th><th>Độ chính xác</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: STATS -->
+        <section id="stats" class="tab-content">
+            <div class="card stats-area">
+                <h3>Tổng quan trọn đời</h3>
+                <div class="table-responsive">
+                    <table id="stats-table">
+                        <thead>
+                            <tr><th>Ký tự</th><th>Tổng</th><th>Đúng</th><th>Sai</th><th>%</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Hidden canvas for pixel comparison -->
+    <canvas id="hidden-canvas" width="300" height="300" style="display:none;"></canvas>
+
+    <script src="app.js"></script>
+</body>
+</html>
