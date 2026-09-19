@@ -229,6 +229,8 @@ function updatePool() {
         document.getElementById('script-badge').innerText = "";
         currentChar = "";
         document.getElementById('write-romaji-target').innerText = "--";
+        const writeBadge = document.getElementById('write-script-badge');
+        if (writeBadge) writeBadge.innerText = "";
     } else {
         document.getElementById('feedback').innerText = "";
         nextKana();
@@ -251,6 +253,8 @@ function nextKana() {
     
     // Đồng thời cập nhật giao diện Tab Luyện Viết
     document.getElementById('write-romaji-target').innerText = currentAnswers[0];
+    const writeBadge = document.getElementById('write-script-badge');
+    if (writeBadge) writeBadge.innerText = `[${currentScript}]`;
     clearPad();
 }
 
@@ -454,23 +458,23 @@ function checkDrawing() {
 
     const fb = document.getElementById('writing-feedback');
     fb.innerText = `Độ chính xác: ${score.toFixed(1)}%`;
-    fb.style.color = score > 60 ? "var(--success)" : "var(--danger)";
+    fb.style.color = score > 40 ? "var(--success)" : "var(--danger)";
 
     // Hiện bóng chữ gốc đè lên nét user
     document.getElementById('drawing-guide').innerText = currentChar;
 
-    // 4. AUTO-SKIP SAU 2 GIÂY (Chỉ lưu vào stats nếu điểm trên 60%)
-    if (score >= 60) {
-        saveData(currentChar, currentScript, true, null); // Lưu data đúng
-        setTimeout(() => {
-            // Kiểm tra xem người dùng có bấm qua chữ khác trong 2s đó không
-            if (document.getElementById('write-romaji-target').innerText === currentWriteRomaji) {
-                document.getElementById('btn-next-write').click();
-            }
-        }, 2000);
-    } else {
-        saveData(currentChar, currentScript, false, null); // Lưu data sai
-    }
+    // 4. TỰ ĐỘNG CHUYỂN CHỮ TIẾP THEO SAU 2 GIÂY (BẤT KỂ ĐÚNG HAY SAI)
+    const isPassed = score >= 40;
+    saveData(currentChar, currentScript, isPassed, null);
+
+    // Vô hiệu hóa nút kiểm tra tạm thời trong 2 giây để tránh bấm nhiều lần
+    const checkBtn = document.getElementById('btn-check');
+    checkBtn.disabled = true;
+
+    setTimeout(() => {
+        document.getElementById('btn-next-write').click();
+        checkBtn.disabled = false;
+    }, 2000);
 }
 
 // -------------------------------------------------------------
